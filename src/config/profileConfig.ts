@@ -6,13 +6,17 @@ export const profileConfig: ProfileConfig = {
 	// 1. public 目录（以 "/" 开头，不优化）："/assets/images/avatar.webp"
 	// 2. src 目录（不以 "/" 开头，自动优化但会增加构建时间，推荐）："assets/images/avatar.webp"
 	// 3. 远程 URL："https://example.com/avatar.jpg"
+	//
+	// 头像（当前是自动生成的字母 J 标记，青绿渐变）
+	// 换成你自己的照片：替换 src/assets/images/avatar.avif，文件名保持不变即可
 	avatar: "assets/images/avatar.avif",
 
 	// 名字
-	name: "Firefly",
+	name: "Jiongzzzz",
 
 	// 个人签名
-	bio: "Hello, I'm Firefly.",
+	// TODO: 换成你自己想写的一句话
+	bio: "计算机专业在读，在这里记录学习笔记和随笔。",
 
 	// 链接配置
 	// 已经预装的图标集：fa7-brands，fa7-regular，fa7-solid，material-symbols，simple-icons
@@ -22,21 +26,15 @@ export const profileConfig: ProfileConfig = {
 	// showName: true 时显示图标和名称，false 时只显示图标
 	links: [
 		{
-			name: "qq",
-			icon: "fa7-brands:qq",
-			url: "https://qm.qq.com/q/ZGsFa8qX2G",
-			showName: false,
-		},
-		{
 			name: "GitHub",
 			icon: "fa7-brands:github",
-			url: "https://github.com/CuteLeaf",
+			url: "https://github.com/jiongzzzz214-spec",
 			showName: false,
 		},
 		{
 			name: "Email",
 			icon: "fa7-solid:envelope",
-			url: "mailto:xiaye@msn.com",
+			url: "mailto:jiongzzzz214@gmail.com",
 			showName: false,
 		},
 		{

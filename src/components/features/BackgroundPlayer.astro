@@ -26,7 +26,17 @@ const tLoadError = i18n(I18nKey.videoLoadError);
 				id="bg-player-overlay"
 				class="absolute inset-0 z-15 overflow-hidden pointer-events-none transition-opacity duration-500 ease-in-out opacity-0"
 			>
-				<video id="bg-player-video" preload="auto" playsinline class="size-full object-cover"></video>
+				<video
+					id="bg-player-video"
+					preload="auto"
+					playsinline
+					loop={!hasMultiple}
+					class="size-full object-cover"
+				></video>
+				{/* loop={!hasMultiple} 是本博客对主题的改动（原版没有 loop）：
+				    只有单个视频时循环播放，否则 20 秒就播完停住、退回静态壁纸，
+				    当"动态壁纸"用很别扭。
+				    多视频时不能加 loop —— 加了 ended 事件就不触发，轮播会失效。 */}
 			</div>
 
 			<div id="bg-player-controls" class="absolute bottom-4 left-4 z-30 flex items-center gap-1.5 group">

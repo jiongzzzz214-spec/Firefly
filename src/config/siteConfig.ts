@@ -12,7 +12,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "Jiongzzzz的个人博客",
 
 	// 站点 URL
-	site_url: "http://localhost:4321/",
+	site_url: "https://720620.xyz/",
 
 	// 站点描述
 	description:
@@ -20,12 +20,13 @@ export const siteConfig: SiteConfig = {
 
 	// 站点关键词
 	keywords: [
-		"Firefly",
-		"Fuwari",
+		"Jiongzzzz",
+		"个人博客",
+		"学习笔记",
+		"随笔",
+		"计算机",
+		"编程",
 		"Astro",
-		"ACGN",
-		"博客",
-		"技术博客",
 		"静态博客",
 	],
 
@@ -74,11 +75,13 @@ export const siteConfig: SiteConfig = {
 		// 4. 网络图片: { type: "url", value: "https://example.com/logo.png", alt: "Logo" }
 		logo: {
 			type: "image",
-			value: "assets/images/firefly.png",
-			alt: "🍀",
+			// 你自己的图标（字母 J 的几何标记，青绿渐变）
+			// 想换：替换 src/assets/images/logo.png，或改掉下面这行路径
+			value: "assets/images/logo.png",
+			alt: "Jiongzzzz",
 		},
 		// 导航栏标题
-		title: "Firefly",
+		title: "Jiongzzzz",
 		// 全宽导航栏，导航栏是否占满屏幕宽度
 		widthFull: false,
 		// 导航菜单对齐方式，left：左对齐，center：居中
@@ -191,7 +194,8 @@ export const siteConfig: SiteConfig = {
 	// bangumi配置
 	bangumi: {
 		// Bangumi用户ID
-		userId: "1143164",
+		// 来源：https://bangumi.tv/user/820148
+		userId: "820148",
 		// 数据模式：static=构建时获取，dynamic=客户端实时获取
 		// static 模式在构建时获取数据并静态渲染，部署后数据不更新
 		// dynamic 模式在浏览器中实时请求 API，始终显示最新数据
@@ -211,7 +215,8 @@ export const siteConfig: SiteConfig = {
 		// Bilibili 配置
 		bilibili: {
 			// 你的 Bilibili 用户 UID
-			uid: "38932988",
+			// 来源：https://space.bilibili.com/318802268
+			uid: "318802268",
 		},
 		// TMDB 配置（可选，需要翻墙）
 		// tmdb: {

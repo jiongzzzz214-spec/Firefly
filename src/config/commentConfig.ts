@@ -2,7 +2,7 @@ import type { CommentConfig } from "../types/commentConfig";
 
 export const commentConfig: CommentConfig = {
 	// 评论系统类型: none, twikoo, waline, giscus, disqus, artalk，默认为none，即不启用评论系统
-	type: "none",
+	type: "giscus",
 
 	//twikoo评论系统配置
 	twikoo: {
@@ -54,13 +54,21 @@ export const commentConfig: CommentConfig = {
 	//giscus评论系统配置
 	giscus: {
 		// 设置 Giscus 评论系统仓库
-		repo: "CuteLeaf/Firefly",
+		repo: "jiongzzzz214-spec/Firefly",
 		// 设置 Giscus 评论系统仓库ID
-		repoId: "R_kgD2gfdFGd",
+		// 已填好：这个值就是 GitHub 仓库的 node_id，用
+		//   https://api.github.com/repos/jiongzzzz214-spec/Firefly
+		// 查到的 node_id = R_kgDOTZEMsA
+		repoId: "R_kgDOTZEMsA",
 		// 设置 Giscus 评论系统分类
-		category: "General",
+		// 推荐用「Announcements」类型的分类：只有 giscus App 能在里面新建讨论，
+		// 可以防止访客绕过评论区直接建空的讨论。
+		// ⚠️ 这里填的名字必须和你在 giscus.app 选的分类名字完全一致
+		category: "Announcements",
 		// 获取 Giscus 评论系统分类ID
-		categoryId: "DIC_kwDOKy9HOc4CegmW",
+		// 已填好：Announcements 分类的 node_id（从 https://giscus.app/api/discussions/categories?repo=... 取的）
+		// 如果哪天在 GitHub 里删掉重建了这个分类，这个值会失效，需要重新取一次
+		categoryId: "DIC_kwDOTZEMsM4DFYWi",
 		// 获取 Giscus 评论系统映射方式
 		mapping: "title",
 		// 获取 Giscus 评论系统严格模式

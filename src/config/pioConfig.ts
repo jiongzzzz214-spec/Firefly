@@ -1,5 +1,10 @@
 import type { Live2DWidgetConfig, SpineModelConfig } from "../types/pioConfig";
 
+// 【说明】public/pio/ 下的模板示例模型文件（Spine 的「流萤」模型 8.8M + Live2D 的 snow_miku 模型 5.8M）
+// 已经删除，所以下面两处的 path 目前指向不存在的文件。看板娘功能默认关闭，不影响站点运行。
+// 想启用的话：去 https://github.com/CuteLeaf/Firefly 重新下载 public/pio/ 目录，
+// 或把自己的模型放进 public/pio/models/ 下，再把 path 改过去。
+
 // Spine 看板娘配置
 export const spineModelConfig: SpineModelConfig = {
 	// Spine 看板娘开关
@@ -50,7 +55,7 @@ export const spineModelConfig: SpineModelConfig = {
 		],
 		// 点击时随机显示的文字消息
 		clickMessages: [
-			"你好呀！我是流萤~",
+			"你好呀！欢迎来到我的博客~",
 			"今天也要加油哦！✨",
 			"想要一起去看星空吗？🌟",
 			"记得要好好休息呢~",

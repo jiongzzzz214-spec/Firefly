@@ -175,9 +175,11 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			specificConfig: {
 				ad: {
 					image: {
-						src: "/assets/images/ad/ad1.webp",
+						// TODO: 模板作者的广告图和推广返利链接已移除。
+						//       想放广告就把图片丢到 public/assets/images/ad/ 下，再填这里
+						src: "",
 						alt: "广告横幅",
-						link: "https://haoka.lot-ml.com/plugreg.html?agentid=1423316",
+						link: "",
 						external: true,
 					},
 					// 是否允许关闭广告

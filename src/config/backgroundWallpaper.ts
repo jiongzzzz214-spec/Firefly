@@ -17,6 +17,13 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	 * 3. 远程 URL："https://example.com/banner.jpg"
 	 * 注意：远程URL和public目录的图片不会被优化，请确保图片体积足够小以免影响加载速度
 	 *
+	 * 【动态图片（GIF / 动态 WebP / APNG）】
+	 * 想让壁纸是一张会动的图，必须放在 public 目录并用 "/" 开头的路径引用，例如：
+	 *   desktop: ["/assets/images/wallpaper/desktop.webp"]
+	 * 因为放在 src 目录的图片会经过 Astro 压缩转成静态 webp，动画会被丢掉（只剩第一帧）。
+	 * 但动图当全屏壁纸体积非常大（1080p 动图动辄几十 MB），
+	 * 一般还是用上面的「背景视频」更划算。
+	 *
 	 * 建议不要替换d1-d6，m1-m6这些默认示例图片，但你可以删除掉节省空间
 	 * 因为以后可能会更换示例图片，导致你自定义的图片被覆盖
 	 * 所以建议使用自己的图片的时候命名为其他名称，不要使用d1-d6，m1-m6这些名称
@@ -60,13 +67,39 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			"assets/images/MobileWallpaper/m5.avif",
 			"assets/images/MobileWallpaper/m6.avif",
 		],
-		// 背景视频播放地址
-		// 支持单个视频路径（字符串）或多个视频循环（数组）
-		// 支持远程视频URL，本地视频请放在 public/assets/videos/ 目录下
-		// playerUrl: "/assets/videos/firefly.mp4",
-		playerUrl: [
-			"https://www.image2url.com/r2/default/videos/1781765166391-f2ba6648-1597-40e0-9f0a-6768ae39e574.mp4",
-		],
+		// ── 背景视频（动态壁纸）─────────────────────────────────
+		// 支持单个视频（字符串）或多个视频循环（数组）
+		// 本地视频放在 public/assets/videos/ 目录下，用 "/assets/videos/文件名.mp4" 引用
+		//
+		// 【格式要求】浏览器用原生 <video> 直接播放，所以：
+		//   - 推荐 MP4（H.264 视频 + AAC 音频）—— 兼容性最好，所有浏览器都支持
+		//   - WebM（VP9 / AV1）体积更小，但 Safari 支持不完整，手机端可能播不了
+		//   - 不建议 MOV / AVI / MKV —— 浏览器普遍不支持
+		// 【体积建议】1920×1080、码率 2~4 Mbps、时长 10~30 秒，控制在 5~15 MB
+		//   public/ 目录的文件不会被构建压缩，必须自己先压好
+		//
+		// 【已知行为，配之前要知道】
+		//   1. 不会自动播放 —— 访客要点击导航栏的视频按钮才会播（这是主题的设计）
+		//   2. 单个视频播完就停（不会循环）；配 2 个以上视频才会依次轮播
+		//   3. 视频是有声音的 —— 主题先静音播放，100ms 后恢复音量
+		//      想让它当纯背景，视频本身要压成无声的
+		//   4. 画面用 object-cover 铺满，比例不匹配会被裁切
+		//   5. 视频播放时，上面的静态壁纸会自动隐藏
+		//
+		// ── 当前使用的视频 ────────────────────────────────────
+		// huaqing2.mp4 由 E:\视频\花情2.mp4 压制而成：
+		//   原始：3840x2160 / 60fps / 49 Mbps / 122 MB / 20 秒
+		//   成品：1920x1080 / 30fps / 4.9 Mbps / 11.7 MB / 20 秒
+		// 压制命令（ffmpeg）：
+		//   ffmpeg -i "原始.mp4" -vf "scale=1920:1080:flags=lanczos,fps=30" \
+		//     -c:v libx264 -preset slow -crf 23 -profile:v high -level 4.0 \
+		//     -pix_fmt yuv420p -an -movflags +faststart -y huaqing2.mp4
+		// 说明：-an 丢掉音轨（原音轨是 -91dB 的数字静音，留着没意义，
+		//       丢掉还能保证播放时绝对不出声）
+		//       -movflags +faststart 把索引放到文件头部，边下边播
+		//
+		// 换自己的视频：压好后放进 public/assets/videos/，改下面的路径即可
+		playerUrl: ["/assets/videos/huaqing2.mp4"],
 	},
 	// 横幅壁纸和全屏壁纸共享配置
 	common: {
@@ -81,24 +114,20 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 是否允许用户通过控制面板切换横幅标题显示
 			switchable: true,
 			// 主页横幅主标题
-			title: "Lovely firefly!",
+			title: "这里是 Jiongzzzz",
 			// 主页横幅主标题字体大小
+			// 实际生效值 = min(这个值, 10vw)：桌面端按这个值显示，手机上自动缩到 10vw
 			titleSize: "3.8rem",
 			// 主页横幅副标题
-			subtitle: [
-				"In Reddened Chrysalis, I Once Rest",
-				"From Shattered Sky, I Free Fall",
-				"Amidst Silenced Stars, I Deep Sleep",
-				"Upon Lighted Fyrefly, I Soon Gaze",
-				"From Undreamt Night, I Thence Shine",
-				"In Finalized Morrow, I Full Bloom",
-			],
+			// 写数组 → 多条依次循环；写单个字符串 → 只显示这一句
+			subtitle: "欢迎来到我的博客",
 			// 主页横幅副标题字体大小
 			subtitleSize: "1.5rem",
 			typewriter: {
 				// 是否启用打字机效果
-				// 打字机开启 → 循环显示所有副标题
-				// 打字机关闭 → 每次刷新随机显示一条副标题
+				// 副标题是数组   → 逐字打出、停顿、删除，然后循环下一条
+				// 副标题只有一句 → 打一遍就停住，永远不会删除
+				// 改成 false     → 不要动画，直接静态显示
 				enable: true,
 				// 打字速度（毫秒）
 				speed: 100,

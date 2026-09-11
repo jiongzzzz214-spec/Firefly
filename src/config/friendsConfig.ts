@@ -21,35 +21,18 @@ export const friendsPageConfig: FriendsPageConfig = {
 };
 
 // 友链配置
+// TODO: 下面是空的，等你有了自己的友链，照着注释里的格式往里加就行。
+//       每条必填 title（站名）、imgurl（头像图）、desc（简介）、siteurl（网址）。
 export const friendsConfig: FriendLink[] = [
-	{
-		title: "夏夜流萤",
-		imgurl:
-			"https://weavatar.com/avatar/d252655d40d6874417a720bad0a6c5f77f8f6a1fd2f882f8f338402dc37e4190?s=640",
-		desc: "飞萤之火自无梦的长夜亮起，绽放在终竟的明天。",
-		siteurl: "https://blog.cuteleaf.cn",
-		tags: ["Blog"],
-		weight: 10, // 权重，数字越大排序越靠前
-		enabled: true, // 是否启用
-	},
-	{
-		title: "Firefly Docs",
-		imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
-		desc: "Firefly主题模板文档",
-		siteurl: "https://docs-firefly.cuteleaf.cn",
-		tags: ["Docs"],
-		weight: 9,
-		enabled: true,
-	},
-	{
-		title: "Astro",
-		imgurl: "https://avatars.githubusercontent.com/u/44914786?v=4&s=640",
-		desc: "The web framework for content-driven websites. ⭐️ Star to support our work!",
-		siteurl: "https://github.com/withastro/astro",
-		tags: ["Framework"],
-		weight: 8,
-		enabled: true,
-	},
+	// {
+	// 	title: "朋友的博客",
+	// 	imgurl: "https://example.com/avatar.jpg",
+	// 	desc: "一句话简介",
+	// 	siteurl: "https://example.com",
+	// 	tags: ["Blog"],
+	// 	weight: 10, // 权重，数字越大排序越靠前
+	// 	enabled: true, // 是否启用
+	// },
 ];
 
 // 获取启用的友链并进行排序
