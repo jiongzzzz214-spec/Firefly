@@ -68,19 +68,9 @@ export const fontsList: FontDefinition[] = [
 	// 1. 将 TTF/OTF/WOFF2 字体文件放在 public/assets/fonts/ 目录下
 	// 2. 参考下方配置填写正确的字体信息
 	// 3. 在 fontConfig.selected 或区域字段中引用 cssVariable
-	{
-		name: "GreatVibes Regular 2",
-		cssVariable: "--font-greatvibes",
-		provider: "local",
-		options: {
-			variants: [
-				{
-					src: ["./public/assets/fonts/GreatVibes-Regular-2.otf"],
-				},
-			],
-		},
-		fallbacks: ["sans-serif"],
-	},
+	//
+	// 注意：主题自带的 GreatVibes 示例字体已删除（本来就没被任何区域引用，
+	// 留着只会白白增加构建时的字体处理开销）。需要时按上面三步重新加即可。
 ];
 
 // ─── 字体选择与区域覆盖 ─────────────────────────────────────
@@ -104,10 +94,7 @@ export const fontConfig: FontSelectionConfig = {
 
 	// 本地字体子集化配置（构建时由 scripts/subset-fonts.ts 处理）
 	// key 为 fonts 数组中对应的 cssVariable，value 为子集化选项
-	subsetFonts: {
-		"--font-greatvibes": {
-			// 额外包含的字符
-			extraChars: "",
-		},
-	},
+	// 目前 fontsList 里没有 local 字体，所以留空；
+	// 以后加了本地字体，在这里按 "--font-xxx": { extraChars: "" } 的格式补上即可。
+	subsetFonts: {},
 };

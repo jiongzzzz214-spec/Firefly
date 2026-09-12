@@ -2,20 +2,37 @@ import type { CommentConfig } from "../types/commentConfig";
 
 export const commentConfig: CommentConfig = {
 	// 评论系统类型: none, twikoo, waline, giscus, disqus, artalk，默认为none，即不启用评论系统
+	//
+	// 当前用 giscus：国内访客大概率发不出评论（要 GitHub 登录）。
+	// 想换成国内友好的 Twikoo：先照 Twikoo 那一段的注释部署后端拿到地址，
+	// 然后把这里的 "giscus" 改成 "twikoo"、填好 envId 即可，其它都不用动。
 	type: "giscus",
 
 	//twikoo评论系统配置
+	//
+	// 【什么时候需要它】
+	// giscus 依赖 GitHub 登录，国内访客往往加载不出、也发不了评论。
+	// Twikoo 是自托管的，不依赖任何被墙的服务，国内访问体验最好。
+	//
+	// 【但必须先有自己的后端】Twikoo 是「前端 + 后端」结构，
+	// envId 就是后端地址。没有后端的话，把 type 改成 twikoo 会导致评论区直接空白。
+	// 部署方法见：C:\Users\Setsuna\WorkBuddy AI\2026-09-11-20-08-42\Twikoo评论-Cloudflare部署指南.md
+	// 部署完拿到地址后，只需改两处：type 改成 "twikoo" + 下面 envId 填你的地址。
 	twikoo: {
-		envId: "https://twikoo.vercel.app",
+		// 后端地址。部署完成后填这里，例如：
+		//   Cloudflare Workers: "https://twikoo.你的子域.workers.dev"
+		//   腾讯云开发:          "https://你的环境ID.service.tcloudbase.com/twikoo"
+		//   自有域名:            "https://twikoo.720620.xyz"
+		envId: "",
 		// 设置 Twikoo 评论系统语言
 		lang: "zh-CN",
 		// 是否启用文章访问量统计功能
 		visitorCount: true,
 		// Twikoo JS 文件地址，支持 CDN 链接
-		// 中国推荐1: https://registry.npmmirror.com/twikoo/1.7.12/files/dist/twikoo.min.js
-		// 中国推荐2: https://s4.zstatic.net/npm/twikoo@1.7.13/dist/twikoo.min.js
-		// 国际推荐: https://cdn.jsdelivr.net/npm/twikoo@1.7.13/dist/twikoo.min.js
-		jsUrl: "https://cdn.jsdelivr.net/npm/twikoo@1.7.13/dist/twikoo.min.js",
+		// 已选用 npmmirror（阿里云 npm 镜像）—— 国内可直连，实测 456 KB 正常返回。
+		// 备选：https://s4.zstatic.net/npm/twikoo@1.7.13/dist/twikoo.min.js
+		// 不推荐 cdn.jsdelivr.net —— 国内经常被 DNS 污染，加载不出前端脚本。
+		jsUrl: "https://registry.npmmirror.com/twikoo/1.7.13/files/dist/twikoo.min.js",
 		// Twikoo 自定义 CSS 文件地址，为空则不加载
 		cssUrl: "/assets/css/twikoo-custom.css",
 	},

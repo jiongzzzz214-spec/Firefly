@@ -1,0 +1,45 @@
+---
+/**
+ * 邮箱防爬组件
+ *
+ * 目标：构建产物（静态 HTML）里既不出现明文邮箱，也不出现可被正则匹配的 mailto: 链接。
+ *
+ * 做法：
+ *   1. 可见文本用 `[at]` 掩码 —— 人眼一看就懂，但爬虫的 `xxx@yyy.zzz` 正则匹配不到；
+ *   2. mailto 地址以 base64 存进 data-encoded-email，点击时才解码并跳转。
+ *
+ * 主题自带的侧边栏 Profile.astro 也是同一套思路（那边只处理 mailto: 链接），
+ * 这里抽成组件，方便在正文/友链页里复用。
+ */
+interface Props {
+	email: string;
+	class?: string;
+}
+
+const { email, class: className } = Astro.props;
+
+const encoded = Buffer.from(email, "utf-8").toString("base64");
+// 把 @ 换成 [at]：既能让人看懂，又不会被邮箱正则抓到
+const masked = email.replace("@", " [at] ");
+
+// 点击时：解码 → 写回 href 和文本 → 去掉自身 handler → 放行默认跳转（唤起邮件客户端）
+const onClick = [
+	"(function(){",
+	"var a=this;",
+	"var e=atob(a.getAttribute('data-encoded-email'));",
+	"a.href='mailto:'+e;",
+	"a.textContent=e;",
+	"a.removeAttribute('data-encoded-email');",
+	"a.removeAttribute('onclick');",
+	"return true;",
+	"}).call(this);",
+].join("");
+---
+
+<a
+	href="#"
+	rel="nofollow"
+	data-encoded-email={encoded}
+	class:list={["email-obfuscated", className]}
+	onclick={onClick}
+	title="点击显示邮箱并发送邮件">{masked}</a>

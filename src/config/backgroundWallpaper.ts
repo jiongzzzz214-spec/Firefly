@@ -6,7 +6,12 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	// 是否允许用户通过导航栏切换壁纸模式
 	// 且同时维护多种壁纸模式过于复杂（已经屎山代码），在切换时有时候可能会出现一些奇怪的过渡效果或者bug
 	// 推荐只选择自己喜欢的模式并关闭切换功能
-	switchable: true,
+	//
+	// 本博客已关闭（false）：overlay 模式是定下来的默认模式，
+	// 关掉切换按钮后访客就不会误切成 banner/fullscreen，
+	// 也就不会出现「overlay 下横幅文字不显示」之类的错位问题。
+	// 注意：返回访客的 localStorage 里可能还存着旧的 wallpaperMode，需要清一次缓存才会回到默认值。
+	switchable: false,
 	// 是否启用背景视频播放，配置后将在导航栏显示视频播放按钮
 	playerEnable: true,
 	/**
