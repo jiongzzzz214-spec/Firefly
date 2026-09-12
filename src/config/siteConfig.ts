@@ -76,8 +76,9 @@ export const siteConfig: SiteConfig = {
 		// 4. 网络图片: { type: "url", value: "https://example.com/logo.png", alt: "Logo" }
 		logo: {
 			type: "image",
-			// 你自己的图标（字母 J 的几何标记，青绿渐变）
+			// 剪影插画（源图 E:/图片/微信图片_20260912213919_63_6.jpg，512x512）
 			// 想换：替换 src/assets/images/logo.png，或改掉下面这行路径
+			// 注意：导航栏里只有 28x28（h-7 w-7），细节多的图会糊，必要时改用裁头部的版本
 			value: "assets/images/logo.png",
 			alt: "Jiongzzzz",
 		},

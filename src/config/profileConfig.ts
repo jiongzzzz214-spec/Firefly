@@ -7,7 +7,7 @@ export const profileConfig: ProfileConfig = {
 	// 2. src 目录（不以 "/" 开头，自动优化但会增加构建时间，推荐）："assets/images/avatar.webp"
 	// 3. 远程 URL："https://example.com/avatar.jpg"
 	//
-	// 头像：当前是自己的照片（由 D:/Setsuna/Pictures/Magpie_011.png 转成 avif）
+	// 头像：当前是剪影插画（E:/图片/微信图片_20260912213919_63_6.jpg 转成 avif）
 	// 想再换：替换 src/assets/images/avatar.avif，文件名保持不变即可（建议 1024x1024 正方形）
 	avatar: "assets/images/avatar.avif",
 
