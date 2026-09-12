@@ -51,21 +51,11 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// desktop: "assets/images/DesktopWallpaper/d1.avif",
 		desktop: [
 			"assets/images/DesktopWallpaper/my1.avif",
-			"assets/images/DesktopWallpaper/my2.avif",
-			"assets/images/DesktopWallpaper/my3.avif",
-			"assets/images/DesktopWallpaper/my4.avif",
-			"assets/images/DesktopWallpaper/my5.avif",
-			"assets/images/DesktopWallpaper/my6.avif",
 		],
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
 		mobile: [
 			"assets/images/MobileWallpaper/mym1.avif",
-			"assets/images/MobileWallpaper/mym2.avif",
-			"assets/images/MobileWallpaper/mym3.avif",
-			"assets/images/MobileWallpaper/mym4.avif",
-			"assets/images/MobileWallpaper/mym5.avif",
-			"assets/images/MobileWallpaper/mym6.avif",
 		],
 		// ── 背景视频（动态壁纸）─────────────────────────────────
 		// 支持单个视频（字符串）或多个视频循环（数组）
