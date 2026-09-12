@@ -1,0 +1,35 @@
+---
+/**
+ * Cloudflare Web Analytics
+ *
+ * 为什么推荐它：
+ *   - 免费，且不需要 cookie（因此不用做同意横幅）
+ *   - 与本站的 Cloudflare Workers 同源，部署链路一致
+ *   - 控制台直接看 PV / UV / 来源 / 页面排行 / Core Web Vitals
+ *
+ * 与主题里其它统计（GA / Clarity / Umami / 51la）的关系：
+ *   互不冲突，都是「填了 ID 才注入」。只填这一个也完全可以。
+ *
+ * token 的获取方式见 src/config/analyticsConfig.ts 里的注释。
+ */
+interface Props {
+	token: string;
+	scriptUrl?: string;
+}
+
+const {
+	token,
+	scriptUrl = "https://static.cloudflareinsights.com/beacon.min.js",
+} = Astro.props;
+
+// Cloudflare 官方要求 beacon 配置以 JSON 形式放在 data-cf-beacon 上
+const beaconConfig = JSON.stringify({ token });
+---
+
+<script
+	is:inline
+	data-swup-ignore-script
+	defer
+	src={scriptUrl}
+	data-cf-beacon={beaconConfig}
+></script>

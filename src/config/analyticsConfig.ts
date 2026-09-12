@@ -5,6 +5,19 @@ export const analyticsConfig: AnalyticsConfig = {
 	googleAnalyticsId: "",
 	// Microsoft Clarity ID
 	microsoftClarityId: "",
+	// Cloudflare Web Analytics（推荐用这个：免费、无 cookie、不用做同意横幅、与本站的
+	// Cloudflare Workers 同源）
+	//
+	// 怎么拿 token：
+	//   1. Cloudflare 控制台 → Analytics & Logs → Web Analytics
+	//   2. Add a site → 填 720620.xyz（选 "Manually add a JS snippet"）
+	//   3. 把给的 data-cf-beacon 里的 token 复制到下面
+	// 填上就自动生效，不用改任何组件代码。
+	cloudflareWebAnalytics: {
+		token: "",
+		// 默认官方地址；如果国内访问不稳，可以自建反代后改这里
+		scriptUrl: "https://static.cloudflareinsights.com/beacon.min.js",
+	},
 	// Umami 统计配置
 	umamiAnalytics: {
 		// Umami Website ID

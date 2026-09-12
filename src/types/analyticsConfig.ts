@@ -1,6 +1,10 @@
 export type AnalyticsConfig = {
 	googleAnalyticsId?: string; // Google Analytics ID
 	microsoftClarityId?: string; // Microsoft Clarity ID
+	cloudflareWebAnalytics?: {
+		token?: string; // Cloudflare Web Analytics 站点令牌（填了就自动生效）
+		scriptUrl?: string; // beacon 脚本地址，默认官方地址，可换成自建反代
+	};
 	umamiAnalytics?: {
 		websiteId?: string; // Umami Website ID
 		scriptUrl?: string; // Umami JS地址，支持使用自建
