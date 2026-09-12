@@ -1,4 +1,5 @@
 import type { MusicPlayerConfig } from "../types/musicConfig";
+import { freePlaylist } from "./musicPlaylist";
 
 // 音乐播放器配置
 export const musicPlayerConfig: MusicPlayerConfig = {
@@ -10,8 +11,12 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	// 是否在导航栏显示音乐播放器入口
 	showInNavbar: true,
 
-	// 使用方式："meting" 使用 Meting API，"local" 使用本地音乐列表
-	mode: "meting",
+	// 使用方式："meting" 使用 Meting API 拉歌单，"local" 使用本文件里的自定义播放列表
+	//
+	// 当前用 "local"：播放列表来自 src/config/musicPlaylist.ts（自动生成），
+	// 只保留「匿名请求也能完整播放」的歌，已剔除只给 30~45 秒试听的网易云 VIP 歌。
+	// 原因见 src/config/musicPlaylist.ts 顶部的注释。
+	mode: "local",
 
 	// 默认音量 (0-1)
 	volume: 0.7,
@@ -23,6 +28,8 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	showLyrics: true,
 
 	// Meting API 配置
+	// 【注意】只有 mode 为 "meting" 时才生效。当前 mode 是 "local"，
+	//   所以下面这段不参与播放，保留着是为了随时能切回去（改 mode 即可）。
 	meting: {
 		// Meting API 地址
 		// 【实测结论】模板默认的 api.i-meto.com 请求一直超时（换了两个网络通道都不通，
@@ -51,18 +58,15 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	// 2. 或者直接填入歌词字符串内容
 	// lrc: "[00:00.00]歌词内容...",
 	local: {
-		// 模板自带的歌曲文件已删除。放上你自己的歌之后再启用：
-		//   1. 把你的 mp3 放进 public/assets/music/
-		//   2. 把封面图放进 public/assets/music/cover/
-		//   3. 照下面格式填好，并把本文件顶部的 showInNavbar 改回 true
-		playlist: [
-			// {
-			// 	name: "歌曲名",
-			// 	artist: "歌手",
-			// 	url: "/assets/music/你的文件名.mp3",
-			// 	cover: "/assets/music/cover/封面图.webp",
-			// 	lrc: "",
-			// },
-		],
+		// 播放列表由 src/config/musicPlaylist.ts 自动生成（当前 206 首，全部可完整播放）
+		//
+		// 重新生成（换歌单时）：
+		//   python audit-playlist.py <歌单ID> --emit-ts "<仓库>/src/config/musicPlaylist.ts"
+		//
+		// 也可以手写。url / cover / lrc 三处都支持完整 http(s):// 地址，
+		// 不写 http 前缀则按 public 目录的相对路径解析：
+		//   { name: "歌曲名", artist: "歌手", url: "/assets/music/xxx.mp3",
+		//     cover: "/assets/music/cover/x.webp", lrc: "" },
+		playlist: freePlaylist,
 	},
 };
