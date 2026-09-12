@@ -5,14 +5,18 @@ export const analyticsConfig: AnalyticsConfig = {
 	googleAnalyticsId: "",
 	// Microsoft Clarity ID
 	microsoftClarityId: "",
-	// Cloudflare Web Analytics（推荐用这个：免费、无 cookie、不用做同意横幅、与本站的
-	// Cloudflare Workers 同源）
+	// ⚠️ Cloudflare Web Analytics —— 本站**已经在用了，且不需要这里填任何东西**
 	//
-	// 怎么拿 token：
-	//   1. Cloudflare 控制台 → Analytics & Logs → Web Analytics
-	//   2. Add a site → 填 720620.xyz（选 "Manually add a JS snippet"）
-	//   3. 把给的 data-cf-beacon 里的 token 复制到下面
-	// 填上就自动生效，不用改任何组件代码。
+	// 现状（2026-09-12 确认）：控制台里 720620.xyz 已存在，模式是「自动设置」，
+	// 且正在正常收集数据（24 小时 65 PV / 26 访问）。
+	// 「自动设置」由 Cloudflare 在边缘自动往 HTML 注入 beacon，**不经过本配置**。
+	//
+	// 🔴 所以下面的 token 请**保持留空**。
+	//    自动注入 + 这里再填 token = 页面上出现两个 beacon = 访问量被重复计数。
+	//
+	// 什么时候才需要填：只有当控制台的自动设置失效、或站点不再走 Cloudflare 代理时，
+	// 才在 Manage site 里改用「Enable with JS Snippet installation」，
+	// 把 snippet 里的 token 填到下面（组件已备好，见 components/analytics/CloudflareWebAnalytics.astro）。
 	cloudflareWebAnalytics: {
 		token: "",
 		// 默认官方地址；如果国内访问不稳，可以自建反代后改这里

@@ -1,16 +1,20 @@
 ---
 /**
- * Cloudflare Web Analytics
+ * Cloudflare Web Analytics（手动 beacon 版）
  *
- * 为什么推荐它：
- *   - 免费，且不需要 cookie（因此不用做同意横幅）
- *   - 与本站的 Cloudflare Workers 同源，部署链路一致
- *   - 控制台直接看 PV / UV / 来源 / 页面排行 / Core Web Vitals
+ * 🔴 本站目前**用不到这个组件**，别填 token。
  *
- * 与主题里其它统计（GA / Clarity / Umami / 51la）的关系：
- *   互不冲突，都是「填了 ID 才注入」。只填这一个也完全可以。
+ * 原因：720620.xyz 在 Cloudflare 控制台里的 Web Analytics 已经是「自动设置」模式，
+ * Cloudflare 会在边缘自动注入 beacon 并正常收数据（2026-09-12 实测 24 小时 65 PV / 26 访问）。
+ * 自动注入不经过本组件；如果这里再填一个 token，页面上就会出现两个 beacon，
+ * 访问量会被**重复计数**。
  *
- * token 的获取方式见 src/config/analyticsConfig.ts 里的注释。
+ * 保留它的用途：万一以后自动设置失效、或站点不再走 Cloudflare 代理，
+ * 可以在 Manage site 里切到「Enable with JS Snippet installation」，
+ * 把 token 填进 src/config/analyticsConfig.ts 即可无缝切换。
+ *
+ * 为什么选它而不是 GA：免费、不需要 cookie（因此不用做同意横幅）、
+ * 与本站的 Cloudflare Workers 同源。
  */
 interface Props {
 	token: string;
