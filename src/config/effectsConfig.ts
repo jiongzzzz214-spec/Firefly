@@ -34,6 +34,7 @@ export const sakuraConfig: SakuraConfig = {
 	// 樱花移动速度
 	// 注：数值是「每帧位移」（约 60fps），越小越慢。
 	// 当前约为原始模板值（水平 -1.7/-1.2、垂直 1.5/2.2）的 53%，飘落明显更悠闲。
+	// 想更慢可整体再乘 0.6（备选档：水平 -0.55/-0.4、垂直 0.5/0.7、rotation 0.012、fadeSpeed 0.012）。
 	speed: {
 		// 水平移动
 		horizontal: {
