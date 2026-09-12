@@ -7,16 +7,15 @@ export const profileConfig: ProfileConfig = {
 	// 2. src 目录（不以 "/" 开头，自动优化但会增加构建时间，推荐）："assets/images/avatar.webp"
 	// 3. 远程 URL："https://example.com/avatar.jpg"
 	//
-	// 头像（当前是自动生成的字母 J 标记，青绿渐变）
-	// 换成你自己的照片：替换 src/assets/images/avatar.avif，文件名保持不变即可
+	// 头像：当前是自己的照片（由 D:/Setsuna/Pictures/Magpie_011.png 转成 avif）
+	// 想再换：替换 src/assets/images/avatar.avif，文件名保持不变即可（建议 1024x1024 正方形）
 	avatar: "assets/images/avatar.avif",
 
 	// 名字
 	name: "Jiongzzzz",
 
 	// 个人签名
-	// TODO: 换成你自己想写的一句话
-	bio: "计算机专业在读，在这里记录学习笔记和随笔。",
+	bio: "在学计算机，也在学着把日子过明白。",
 
 	// 链接配置
 	// 已经预装的图标集：fa7-brands，fa7-regular，fa7-solid，material-symbols，simple-icons

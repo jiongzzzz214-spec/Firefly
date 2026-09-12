@@ -70,7 +70,8 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		//
 		// 【已知行为，配之前要知道】
 		//   1. 不会自动播放 —— 访客要点击导航栏的视频按钮才会播（这是主题的设计）
-		//   2. 单个视频播完就停（不会循环）；配 2 个以上视频才会依次轮播
+		//   2. 单个视频会自动循环（本博客对主题的改动：BackgroundPlayer.astro 里加了
+		//      loop={!hasMultiple}）；配 2 个以上视频才会依次轮播
 		//   3. 视频是有声音的 —— 主题先静音播放，100ms 后恢复音量
 		//      想让它当纯背景，视频本身要压成无声的
 		//   4. 画面用 object-cover 铺满，比例不匹配会被裁切
