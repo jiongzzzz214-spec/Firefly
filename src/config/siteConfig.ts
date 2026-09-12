@@ -187,11 +187,14 @@ export const siteConfig: SiteConfig = {
 		// 文章页底部的"上次编辑时间"卡片开关
 		showLastModified: true,
 		// 文章过期阈值（天数），超过此天数才显示"上次编辑"卡片
-		outdatedThreshold: 30,
+		// 原值 30 天：技术笔记放一个月就被标「可能已过时」太苛刻了，放宽到半年
+		outdatedThreshold: 180,
 		// 是否开启分享海报生成功能
 		sharePoster: true,
 		// OpenGraph图片功能，注意开启后要渲染很长时间，不建议本地调试的时候开启
-		generateOgImages: false,
+		// 2026-09-12 开启：分享到微信/QQ/Twitter 才有卡片图，否则只有一行光秃秃的文字。
+		// 代价是每篇文章多渲染一张图，文章多了要留意 Cloudflare 构建时长。
+		generateOgImages: true,
 	},
 
 	// bangumi配置

@@ -1,0 +1,23 @@
+# Cloudflare Workers / Pages 静态资源响应头
+# 放在 public/ 下，构建后会出现在 dist/_headers，由 Cloudflare 自动读取。
+# 语法：一个路径匹配行，下面缩进写响应头。
+#
+# 这里**故意不加严格 CSP**：本站用了 giscus（iframe 到 github.com）、
+# 音乐播放器的公共 Meting API、以及各种外链图片，
+# 一个写不对的 CSP 会直接把评论区和播放器打断。要做 CSP 得先逐条列出白名单再上。
+#
+# 也**故意没加 Strict-Transport-Security**：那是「一年内只能用 HTTPS」的长期承诺，
+# 属于策略决定，要开建议去 Cloudflare 控制台 SSL/TLS → HSTS 统一开，别藏在代码里。
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=()
+
+# Astro 的构建产物都带内容哈希（文件名变了就是新文件），可以长期强缓存。
+# 注意只对 /_astro/ 这么做：
+#   - /pagefind/ 的文件名不带哈希，长缓存会让搜索索引更新不及时
+#   - /assets/images/、/favicon/ 也不带哈希，长缓存会让「换头像/Logo 后旧图残留」
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
