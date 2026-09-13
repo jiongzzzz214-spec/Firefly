@@ -42,6 +42,8 @@ cache/
 package/
 .obsidian/
 
-# AI 助手的工作区数据（项目记忆、进展日志）—— 本机专属，不进版本控制。
-# 放在仓库根是为了「工作目录选 E:\blog 时自动加载项目记忆」，见 .workbuddy-ai/memory/MEMORY.md
-.workbuddy-ai/
+# AI 助手的工作区数据
+# - memory/：项目记忆与进展日志，**本机专属**，不进版本控制
+# - skills/：可移植版 skill（由 .workbuddy-ai/sync-skill.sh 生成），**要进版本控制**，
+#   这样 clone 到别的设备后，把工作目录设成仓库根就能自动加载
+.workbuddy-ai/memory/
