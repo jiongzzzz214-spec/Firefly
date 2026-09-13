@@ -34,6 +34,9 @@ yarn.lock
 
 # docs
 Firefly-docs/
+# 本地归档：博客相关资料（部署指南、辅助脚本、图标素材）。
+# 只存在本机，不进版本控制 —— 避免 blog.sh 里的 `git add -A` 把它们扫进提交。
+docs/
 
 cache/
 package/
