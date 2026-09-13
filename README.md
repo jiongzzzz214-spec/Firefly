@@ -65,6 +65,14 @@ draft: false
 
 > `draft: true` 的文章不会出现在线上。
 
+## 在另一台设备上写文章
+
+部署与本地环境**完全解耦**：只要把 Markdown 推送到 `master`，Cloudflare 就会自动构建上线。
+所以换设备时不必装环境 —— **最省事的做法是直接用 GitHub 网页版新建文件**。
+
+三种路线（GitHub 网页版 / 另一台电脑 / 手机）、frontmatter 全表、图片放置规则、
+跨设备注意事项，都在 **[PUBLISHING.md](./PUBLISHING.md)**。
+
 ## 常用配置在哪
 
 | 想改什么 | 文件 |
