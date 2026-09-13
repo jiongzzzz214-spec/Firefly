@@ -32,11 +32,14 @@ const config = sakuraConfig;
 				cxt.restore();
 			}
 
-			update() {
-				this.x = this.fn.x(this.x, this.y);
-				this.y = this.fn.y(this.y, this.y);
-				this.r = this.fn.r(this.r);
-				this.a = this.fn.a(this.a);
+			// k = 时间缩放系数，1 表示「这一帧的耗时相当于 60fps 下的标准一帧」。
+			// 乘上 k 之后花瓣速度就与显示器刷新率和实际帧率无关了 ——
+			// 60Hz / 120Hz / 144Hz 观感一致，掉帧时也不会变慢。
+			update(k = 1) {
+				this.x = this.fn.x(this.x, this.y, k);
+				this.y = this.fn.y(this.y, this.y, k);
+				this.r = this.fn.r(this.r, k);
+				this.a = this.fn.a(this.a, k);
 				// 如果樱花越界，重新调整位置
 				if (
 					this.x > windowWidth ||
@@ -87,9 +90,9 @@ const config = sakuraConfig;
 				this.list.push(sakura);
 			}
 
-			update() {
+			update(k = 1) {
 				for (let i = 0, len = this.list.length; i < len; i++) {
-					this.list[i].update();
+					this.list[i].update(k);
 				}
 			}
 
@@ -131,24 +134,24 @@ const config = sakuraConfig;
 					break;
 				case 'fnx':
 					random = config.speed.horizontal.min + Math.random() * (config.speed.horizontal.max - config.speed.horizontal.min);
-					ret = function (x, _y) {
-						return x + random;
+					ret = function (x, _y, k) {
+						return x + random * (k === undefined ? 1 : k);
 					};
 					break;
 				case 'fny':
 					random = config.speed.vertical.min + Math.random() * (config.speed.vertical.max - config.speed.vertical.min);
-					ret = function (_x, y) {
-						return y + random;
+					ret = function (_x, y, k) {
+						return y + random * (k === undefined ? 1 : k);
 					};
 					break;
 				case 'fnr':
-					ret = function (r) {
-						return r + config.speed.rotation;
+					ret = function (r, k) {
+						return r + config.speed.rotation * (k === undefined ? 1 : k);
 					};
 					break;
 				case 'fna':
-					ret = function (alpha) {
-						return alpha - config.speed.fadeSpeed * 0.01;
+					ret = function (alpha, k) {
+						return alpha - config.speed.fadeSpeed * 0.01 * (k === undefined ? 1 : k);
 					};
 					break;
 			}
@@ -251,11 +254,25 @@ const config = sakuraConfig;
 			startAnimation() {
 				if (!this.ctx || !this.canvas || !this.sakuraList) return;
 
-				const animate = () => {
+				// 以 60fps 为基准：k = 实际帧间隔 / 标准帧间隔。
+				// 这样花瓣的「每秒位移」恒定，不再受刷新率（60/120/144Hz）和掉帧影响。
+				// 改这里之前位移是「每帧固定值」，所以帧率一低花瓣就变慢 ——
+				// Edge 卡顿时花瓣爬行、iPad 与 Chrome 速度不一致，都是这个原因。
+				const FRAME_MS = 1000 / 60;
+				// 单帧最多按 3 帧计：切走标签页再切回来时 rAF 会积压一大段时间，
+				// 不封顶的话花瓣会瞬移一大截。
+				const MAX_K = 3;
+				let lastTime = performance.now();
+
+				const animate = (now) => {
 					if (!this.ctx || !this.canvas || !this.sakuraList) return;
 
+					const elapsed = now - lastTime;
+					lastTime = now;
+					const k = Math.min(elapsed / FRAME_MS, MAX_K);
+
 					this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-					this.sakuraList.update();
+					this.sakuraList.update(k);
 					this.sakuraList.draw(this.ctx);
 					this.animationId = requestAnimationFrame(animate);
 				};

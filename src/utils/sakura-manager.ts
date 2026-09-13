@@ -1,3 +1,13 @@
+/**
+ * ⚠️ 本文件目前是**死代码** —— 全仓库没有任何地方 import 它。
+ *
+ * 真正生效的樱花实现是 `src/components/features/SakuraEffect.astro`
+ * 里那段 `<script is:inline>` 内联脚本（主题自带了一份内联副本）。
+ * 改樱花逻辑请改那个文件，别改这里。
+ *
+ * 本文件保留并且与内联版保持同步，只是为了将来若有人切过来用时行为一致
+ * （2026-09-13 已同步「按时间推进」的改动）。
+ */
 import type { SakuraConfig } from "../types/config";
 
 // 樱花对象类
@@ -8,10 +18,10 @@ class Sakura {
 	r: number;
 	a: number;
 	fn: {
-		x: (x: number, y: number) => number;
-		y: (x: number, y: number) => number;
-		r: (r: number) => number;
-		a: (a: number) => number;
+		x: (x: number, y: number, k: number) => number;
+		y: (x: number, y: number, k: number) => number;
+		r: (r: number, k: number) => number;
+		a: (a: number, k: number) => number;
 	};
 	idx: number;
 	img: HTMLImageElement;
@@ -25,10 +35,10 @@ class Sakura {
 		r: number,
 		a: number,
 		fn: {
-			x: (x: number, y: number) => number;
-			y: (x: number, y: number) => number;
-			r: (r: number) => number;
-			a: (a: number) => number;
+			x: (x: number, y: number, k: number) => number;
+			y: (x: number, y: number, k: number) => number;
+			r: (r: number, k: number) => number;
+			a: (a: number, k: number) => number;
 		},
 		idx: number,
 		img: HTMLImageElement,
@@ -56,11 +66,14 @@ class Sakura {
 		cxt.restore();
 	}
 
-	update() {
-		this.x = this.fn.x(this.x, this.y);
-		this.y = this.fn.y(this.y, this.y);
-		this.r = this.fn.r(this.r);
-		this.a = this.fn.a(this.a);
+	// k = 时间缩放系数，1 表示「这一帧的耗时相当于 60fps 下的标准一帧」。
+	// 乘上 k 之后，花瓣速度就与显示器刷新率和实际帧率无关了 ——
+	// 60Hz / 120Hz / 144Hz 的屏幕观感一致，掉帧时也不会变慢。
+	update(k = 1) {
+		this.x = this.fn.x(this.x, this.y, k);
+		this.y = this.fn.y(this.y, this.y, k);
+		this.r = this.fn.r(this.r, k);
+		this.a = this.fn.a(this.a, k);
 
 		// 如果樱花越界或完全透明，重新调整位置
 		if (
@@ -114,9 +127,9 @@ class SakuraList {
 		this.list.push(sakura);
 	}
 
-	update() {
+	update(k = 1) {
 		for (let i = 0, len = this.list.length; i < len; i++) {
-			this.list[i].update();
+			this.list[i].update(k);
 		}
 	}
 
@@ -175,19 +188,20 @@ function getRandom(
 				config.speed.horizontal.min +
 				Math.random() *
 					(config.speed.horizontal.max - config.speed.horizontal.min);
-			ret = (x: number, _y: number) => x + random;
+			ret = (x: number, _y: number, k = 1) => x + random * k;
 			break;
 		case "fny":
 			random =
 				config.speed.vertical.min +
 				Math.random() * (config.speed.vertical.max - config.speed.vertical.min);
-			ret = (_x: number, y: number) => y + random;
+			ret = (_x: number, y: number, k = 1) => y + random * k;
 			break;
 		case "fnr":
-			ret = (r: number) => r + config.speed.rotation;
+			ret = (r: number, k = 1) => r + config.speed.rotation * k;
 			break;
 		case "fna":
-			ret = (alpha: number) => alpha - config.speed.fadeSpeed * 0.01;
+			ret = (alpha: number, k = 1) =>
+				alpha - config.speed.fadeSpeed * 0.01 * k;
 			break;
 	}
 	return ret;
@@ -296,11 +310,26 @@ export class SakuraManager {
 	private startAnimation(): void {
 		if (!this.ctx || !this.canvas || !this.sakuraList) return;
 
-		const animate = () => {
+		// 以 60fps 为基准：k = 实际帧间隔 / 标准帧间隔。
+		// 这样花瓣的「每秒位移」是恒定的，不再受刷新率（60/120/144Hz）和掉帧影响。
+		// 改这里之前，位移是「每帧固定值」，所以帧率一低花瓣就变慢 ——
+		// Edge 卡顿时花瓣爬行、iPad 与 Chrome 速度不一致，都是这个原因。
+		const FRAME_MS = 1000 / 60;
+		// 单帧最多按 3 帧计：切走标签页再切回来时 rAF 会积压一大段时间，
+		// 不封顶的话花瓣会瞬移一大截。
+		const MAX_K = 3;
+
+		let lastTime = performance.now();
+
+		const animate = (now: number) => {
 			if (!this.ctx || !this.canvas || !this.sakuraList) return;
 
+			const elapsed = now - lastTime;
+			lastTime = now;
+			const k = Math.min(elapsed / FRAME_MS, MAX_K);
+
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.sakuraList.update();
+			this.sakuraList.update(k);
 			this.sakuraList.draw(this.ctx);
 			this.animationId = requestAnimationFrame(animate);
 		};

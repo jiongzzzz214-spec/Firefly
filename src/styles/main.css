@@ -259,14 +259,18 @@ html {
         background-color: var(--card-bg-transparent) !important;
     }
 
-    /* Overlay 模式下，滚动后提高导航栏背景模糊度，增强与正文区分 */
+    /* Overlay 模式下，滚动后提高导航栏背景模糊度，增强与正文区分。
+       注意：原版这里把模糊度**硬编码成 20px**，会覆盖掉
+       backgroundWallpaper.common.navbar.blur 的配置值（本站是 5px）。
+       backdrop-filter 的半径越大，GPU 每帧要重算的面积越大 ——
+       在 Edge / 集显 / 未开硬件加速的机器上会明显掉帧（页面卡 + 樱花变慢）。
+       改成跟随配置值，配置没给才退回 8px。想更磨砂就把 navbar.blur 调大。 */
     .wallpaper-transparent #navbar.navbar-sticky-shadow > div {
-        backdrop-filter: blur(20px) !important;
-     
+        backdrop-filter: blur(var(--navbar-glass-blur, 8px)) !important;
     }
 
     :root.dark .wallpaper-transparent #navbar.navbar-sticky-shadow > div {
-        backdrop-filter: blur(20px) !important;
+        backdrop-filter: blur(var(--navbar-glass-blur, 8px)) !important;
     }
     
     .wallpaper-transparent .btn-card {
